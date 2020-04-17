@@ -2,7 +2,7 @@ package kr.ac.jejunu.user;
 
 
 import org.junit.jupiter.api.Test;
-import org.hamcrest.Matcher;
+
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,7 +19,8 @@ public class userDaoTests {
         Integer id = 1;
 
 
-        UserDao userDao = new JejuUserDao();
+        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
+        UserDao userDao = new UserDao(connectionMaker);
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -30,7 +31,8 @@ public class userDaoTests {
         User user = new User();
         user.setName(name);
         user.setPassword(password);
-        UserDao userDao = new JejuUserDao();
+        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
+        UserDao userDao = new UserDao(connectionMaker);
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
@@ -43,7 +45,8 @@ public class userDaoTests {
         Integer id = 1;
 
 
-        UserDao userDao = new HallaUserDao();
+        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+        UserDao userDao = new UserDao(connectionMaker);
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -54,7 +57,8 @@ public class userDaoTests {
         User user = new User();
         user.setName(name);
         user.setPassword(password);
-        UserDao userDao = new HallaUserDao();
+        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+        UserDao userDao = new UserDao(connectionMaker);
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
@@ -62,10 +66,6 @@ public class userDaoTests {
         assertThat(insertedUser.getName(),is(name));
         assertThat(insertedUser.getPassword(), is(password));
     }
-
-
-
-
 
 
 }
