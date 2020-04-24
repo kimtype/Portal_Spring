@@ -46,7 +46,7 @@ public class userDaoTests {
         User insertedUser = userDao.get(user.getId());
         assertThat(insertedUser.getName(),is(name));
         assertThat(insertedUser.getPassword(), is(password));
-    }
+    }/*
     @Test
     public void getHalla() throws SQLException, ClassNotFoundException {
         Integer id = 1;
@@ -73,7 +73,7 @@ public class userDaoTests {
         assertThat(insertedUser.getName(),is(name));
         assertThat(insertedUser.getPassword(), is(password));
     }
-
+*/
 
 }
 
