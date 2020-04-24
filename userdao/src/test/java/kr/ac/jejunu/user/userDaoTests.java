@@ -1,7 +1,10 @@
 package kr.ac.jejunu.user;
 
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
@@ -14,12 +17,18 @@ public class userDaoTests {
     String name = "type";
     String password = "0000";
 
+    private static UserDao userDao;
+
+    @BeforeAll
+    public static  void setup(){
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+        userDao = applicationContext.getBean("userDao", UserDao.class); /*스프링한테 Bean을 달라고 함. (new를해서 instance를 해주는게 Bean)->디펜던시 룩업*/
+    }
     @Test
     public void get() throws SQLException, ClassNotFoundException {
         Integer id = 1;
 
-        DaoFactory daoFactory = new DaoFactory();
-        UserDao userDao = daoFactory.getUserDao();
+
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -30,8 +39,7 @@ public class userDaoTests {
         User user = new User();
         user.setName(name);
         user.setPassword(password);
-        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
