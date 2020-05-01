@@ -28,7 +28,11 @@ public class DaoFactory {
 
     @Bean /*스프링이 userDao를 new하는 오브젝트 instance*/
     public UserDao userDao() {
-        return new UserDao(dataSource());
+        return new UserDao(jdbcContext());
+    }
+    @Bean
+    public JdbcContext jdbcContext() {
+        return new JdbcContext(dataSource());
     }
 
     @Bean
