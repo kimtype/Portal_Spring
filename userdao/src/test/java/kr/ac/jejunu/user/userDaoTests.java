@@ -4,8 +4,15 @@ package kr.ac.jejunu.user;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import java.sql.SQLException;
 
@@ -21,9 +28,33 @@ public class userDaoTests {
     private static UserDao userDao;
 
     @BeforeAll
-    public static  void setup(){
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
-        userDao = applicationContext.getBean("userDao", UserDao.class); /*스프링한테 Bean을 달라고 함. (new를해서 instance를 해주는게 Bean)->디펜던시 룩업*/
+    public static  void setup() throws ClassNotFoundException {
+//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+//       StaticApplicationContext applicationContext = new StaticApplicationContext();
+//
+//       BeanDefinition dataSourceBeanDefinition = new RootBeanDefinition(SimpleDriverDataSource.class);
+//       dataSourceBeanDefinition.getPropertyValues().addPropertyValue("driverClass"
+//               , Class.forName(System.getenv("DB_CLASSNAME")));
+//        dataSourceBeanDefinition.getPropertyValues().addPropertyValue("driverClass"
+//            , System.getenv("DB_URL"));
+//        dataSourceBeanDefinition.getPropertyValues().addPropertyValue("driverClass"
+//                , System.getenv("DB_USERNAME"));
+//        dataSourceBeanDefinition.getPropertyValues().addPropertyValue("driverClass"
+//                , System.getenv("DB_PASSWORD"));
+//
+//        applicationContext.registerBeanDefinition("dataSource", dataSourceBeanDefinition);
+//
+//       BeanDefinition jdbcContextBeanDefinition = new RootBeanDefinition(JdbcTemplate.class);
+//       jdbcContextBeanDefinition.getConstructorArgumentValues().addGenericArgumentValue(new RuntimeBeanReference("dataSource"));
+//       applicationContext.registerBeanDefinition("jdbcContext", jdbcContextBeanDefinition);
+//
+//       BeanDefinition beanDefinition = new RootBeanDefinition(UserDao.class);
+//       beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(new RuntimeBeanReference("jdbcContext"));
+//       applicationContext.registerBeanDefinition("userDao", beanDefinition);
+
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("daoFactory.xml");
+
+       userDao = applicationContext.getBean("userDao", UserDao.class);
     }
     @Test
     public void get() throws SQLException, ClassNotFoundException {

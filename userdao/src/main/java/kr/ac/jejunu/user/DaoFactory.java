@@ -27,10 +27,10 @@ public class DaoFactory {
     private String password;
 
 
-    @Bean /*스프링이 userDao를 new하는 오브젝트 instance*/
-    public UserDao userDao() {
-        return new UserDao(jdbcContext());
-    }
+//    @Bean
+//    public UserDao userDao() {
+//        return new UserDao(jdbcContext());
+//    }
     @Bean
     public JdbcTemplate jdbcContext() {
         return new JdbcTemplate(dataSource());
