@@ -4,8 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 
 @Controller
 @RequestMapping
@@ -21,6 +26,25 @@ public class UserController {
     public void exception(){
         throw new RuntimeException("아이고");
     }
+
+    @RequestMapping(path = "/upload", method = RequestMethod.GET)
+    public void upload(){
+
+    }
+
+@RequestMapping(path = "/upload", method = RequestMethod.POST)
+    public ModelAndView upload(@RequestParam("file")MultipartFile file, HttpServletRequest request) throws IOException {
+        File path = new File(request.getServletContext().getRealPath("/")+"/Web-INF/static/" +file.getOriginalFilename());
+        FileOutputStream fileOutputStream = new FileOutputStream(path);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+        bufferedOutputStream.write(file.getBytes());
+        bufferedOutputStream.close();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("url", "/images/"+file.getOriginalFilename());
+        return modelAndView;
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView error(Exception e){
         ModelAndView modelAndView = new ModelAndView("error");
