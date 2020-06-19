@@ -32,7 +32,7 @@ public class UserServlet extends GenericServlet {
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         System.out.println("*************** service *******************");
-        User user = userDao.get(1287);
+        User user = userDao.findById(1287).get();
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("<html>");
